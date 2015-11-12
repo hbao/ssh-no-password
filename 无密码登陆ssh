@@ -1,0 +1,25 @@
+1、安装ssh
+直接 sudo apt-get install openssh-server
+2、查看ssh运行状态 
+ps -e | grep ssh
+如果发现 sshd 和 ssh-agent 即表明 ssh服务基本运行正常
+3、生成公钥和私钥
+ssh-keygen -t rsa -P ""
+4、将公钥追加到文件
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+5、测试ssh localhost
+如果发现不用输入密码就可以登录那么 ssh无密码机制就算建立成功了。
+6、失败原因之一：.ssh及其下属子文件的权限问题：
+首选.ssh目录权限是700， 两个dsa 和 rsa的 私钥权限是600，其余文件权限是644.
+下面列出.ssh目录及子文件的权限表：
+[html] view plaincopy在CODE上查看代码片派生到我的代码片
+drwx------  2 hadoop hadoop 4096 2014-06-02 15:32 .  
+drwxr-xr-x 34 hadoop hadoop 4096 2014-06-02 15:06 ..  
+-rw-r--r--  1 hadoop hadoop 2252 2014-06-02 15:32 authorized_keys  
+-rw-------  1 hadoop hadoop  668 2014-06-02 15:11 id_dsa  
+-rw-r--r--  1 hadoop hadoop  615 2014-06-02 15:11 id_dsa.pub  
+-rw-------  1 hadoop hadoop 1675 2014-06-02 15:32 id_rsa  
+-rw-r--r--  1 hadoop hadoop  407 2014-06-02 15:32 id_rsa.pub  
+-rw-r--r--  1 hadoop hadoop  442 2014-06-02 15:08 known_hosts  
+****7、.ssh的父目录的权限问题（我的问题就出现在这里）：
+.ssh的父目录文件权限应该是755（或700），即所属用户的 用户文件 （/home下属的一个用户文件）。
