@@ -1,0 +1,3 @@
+* Samba
+
+[[http://blog.sina.com.cn/s/blog_640029b30100u5mj.html][samba config]]
